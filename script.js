@@ -223,10 +223,10 @@
 
     function startButterflies() {
     if (reduced) return;
-    for (let i = 0; i < 7; i++) setTimeout(spawnButterfly, i * 260);   // llegan varias en cuanto abre el regalo
+    for (let i = 0; i < 10; i++) setTimeout(spawnButterfly, i * 260);   // llegan varias en cuanto abre el regalo
     setTimeout(function loop() {
         spawnButterfly();
-        if (Math.random() < 0.25) spawnButterfly();                      // a veces salen dos casi juntas
+        if (Math.random() < 0.45) spawnButterfly();                      // a veces salen dos casi juntas
         setTimeout(loop, rnd(900, 2200));
     }, 700);
     }
