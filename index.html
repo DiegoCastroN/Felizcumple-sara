@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#160F28">
+<title>Para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Parisienne&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sky" aria-hidden="true"></div>
+<div class="sky sky--far" aria-hidden="true"></div>
+<div class="moon" aria-hidden="true"></div>
+<span class="shoot s1" aria-hidden="true"></span>
+<span class="shoot s2" aria-hidden="true"></span>
+<div class="aurora" aria-hidden="true"></div>
+<div class="dust" aria-hidden="true"></div>
+<div class="butterflies butterflies--back" id="flyBack" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- ── 1. Puerta: toca para abrir ────────────────── -->
+<section class="gate" id="gate">
+  <button class="gate__btn" id="gateBtn">
+    <svg class="gift" viewBox="0 0 120 110" aria-hidden="true">
+      <path class="g-lid" d="M6 34h108v20H6z"/>
+      <path class="g-box" d="M14 54h92v48a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z"/>
+      <path class="g-band" d="M52 34h16v72H52z"/>
+      <path class="g-bow" d="M60 34C60 34 40 34 36 22s14-18 24 12c10-30 28-24 24-12s-24 12-24 12z"/>
+    </svg>
+    <span class="gate__cta">Toca para abrir tu regalo</span>
+  </button>
+</section>
+
+<!-- ── 3. Carta de cumpleaños ────────────────────── -->
+<div class="progress" id="progress" aria-hidden="true"></div>
+<main class="letter" id="letter">
+  <article class="paper">
+    <span class="paper__corner tl"></span><span class="paper__corner tr"></span>
+    <span class="paper__corner bl"></span><span class="paper__corner br"></span>
+
+    <p class="paper__greet">Mi pequeña bro</p>
+    <p class="paper__sub">Feliz cumpleaños. Que la pases súper genial en este día.</p>
+
+    <div class="rule" aria-hidden="true"><span></span>&#10086;<span></span></div>
+
+    <p>Quería aprovechar para dejarte un mensaje. La parte de atrás es un poema que escribí
+       pensando en Dios, un día en que creí que algunos sueños no se cumplirían en mi vida.</p>
+
+    <p>Quería recordarte que Dios no se ha olvidado de ti. Él sigue pendiente, te ama mucho
+       porque eres su princesa y siempre serás su hija hermosa.</p>
+
+    <p>Cada sueño que tienes en tu corazón se cumplirá. Si Dios los puso, créele: en su
+       voluntad y en su tiempo se cumplirán. No desistas de cada sueño tan lindo que tienes;
+       que no haya resultados visibles no significa que Dios no esté trabajando.</p>
+
+    <p>Y si algún día el miedo te habla más fuerte que la fe, quiero que te aferres a esto:</p>
+
+    <blockquote class="verse">
+      <p>No temas, que yo estoy contigo; no desmayes, porque yo soy tu Dios que te esfuerzo;
+         siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.</p>
+      <cite>Isaías 41:10</cite>
+    </blockquote>
+
+    <blockquote class="affirm">
+      <p>Eres importante, eres inteligente, eres suficiente, eres increíble, eres valiente,
+         eres brillante, eres capaz, eres fuerte. Y sí, sí lo eres.</p>
+      <p>Eres una gran mujer, eres un amor de persona, eres trabajadora, eres guapísima,
+         te esfuerzas todos los días y tu corazón es noble. No dudes nunca de ti.</p>
+    </blockquote>
+
+    <p>Y si alguna vez dudas de cuánto vales, quiero que sepas que esto no lo digo solo yo,
+       lo dice Dios:</p>
+
+    <blockquote class="verse">
+      <p>Tú vales mucho para mí, te estimo mucho, te amo. He dado gente para poder tenerte,
+         y naciones para rescatarte con vida.</p>
+      <cite>Isaías 43:4-5</cite>
+    </blockquote>
+
+    <p>Hay muchas personas que sonríen cuando tu nombre cruza su mente, personas que se
+       sienten más ligeras porque tú existes. Importas mucho más de lo que crees.</p>
+
+    <p>A veces nos olvidamos de dar las gracias a la gente que nos hace la vida más fácil
+       solo por estar en ella.</p>
+
+    <p class="paper__close">Mi bro, gracias por ser tú.</p>
+
+    <p class="signature"><span class="signature__by">Con cariño,</span>Diego</p>
+  </article>
+</main>
+
+<!-- ── 2. Poema ──────────────────────────────────── -->
+<div class="stage" id="stage">
+  <article class="sheet" id="sheet">
+    <div class="sheet__ink">
+      <p class="line" style="--i:1">Ese sueño que no puedes soltar…</p>
+      <p class="line" style="--i:2">Lo puse yo.</p>
+      <p class="line" style="--i:3">No lo sueltes… lo puse yo.</p>
+      <p class="line" style="--i:4">Cada sueño de tu corazón fui yo quien los puso.</p>
+      <p class="line" style="--i:5">¿Acaso piensas que no te daré oportunidad para vivirlos?</p>
+      <p class="line" style="--i:6">Todo sueño tiene un propósito claro.</p>
+      <p class="line" style="--i:7">El camino que no entiendes… yo lo conozco.</p>
+      <p class="line" style="--i:8">Lo que aún no ves… yo lo estoy moviendo.</p>
+      <p class="line" style="--i:9">Recuerda, hija: todo tiene su hora.</p>
+      <p class="line" style="--i:10">Descansa… yo sigo trabajando.</p>
+      <p class="line" style="--i:11">Lo que empecé en ti… lo termino yo.</p>
+      <p class="line" style="--i:12">Esta vez… hazlo conmigo.</p>
+      <p class="line" style="--i:13">No me he olvidado de lo que prometí.</p>
+      <p class="sign line" style="--i:14">Dios</p>
+    </div>
+  </article>
+  <button class="hint" id="hint">Presiona para continuar</button>
+</div>
+
+<!-- Sobre acoplado en la esquina -->
+<button class="dock" id="dock" aria-label="Volver a leer el poema">
+  <svg viewBox="0 0 120 82" aria-hidden="true">
+    <rect x="1.5" y="1.5" width="117" height="79" rx="7" class="e-body"/>
+    <path d="M1.5 8 L60 47 L118.5 8" class="e-flap"/>
+    <path d="M1.5 78 L46 42 M118.5 78 L74 42" class="e-seam"/>
+    <circle cx="60" cy="44" r="9" class="e-wax"/>
+  </svg>
+</button>
+
+<div class="butterflies butterflies--front" id="flyFront" aria-hidden="true"></div>
+<script src="script.js"></script>
+</body>
+</html>
