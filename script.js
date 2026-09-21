@@ -7,8 +7,7 @@
   const dock   = document.getElementById('dock');
   const letter = document.getElementById('letter');
   const progress = document.getElementById('progress');
-  const canvas = document.getElementById('fx');
-  const ctx    = canvas.getContext('2d');
+  const canvas = document.getElementById('fx');  const ctx    = canvas.getContext('2d');
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const lines   = document.querySelectorAll('.line').length;
@@ -106,7 +105,7 @@
   gateBtn.addEventListener('click', () => {
     if (opened) return; opened = true;
     audio(); chime(); paperSound(.7, .18); confetti(70);
-    startButterflies()
+    startButterflies();
     gate.classList.add('is-gone');
     stage.classList.add('is-on');
     const wait = reduced ? 400 : 500 + lines * 500 + 800;
@@ -167,28 +166,30 @@
     const max = document.documentElement.scrollHeight - innerHeight;
     progress.style.width = (max > 0 ? Math.min(scrollY / max, 1) * 100 : 0) + '%';
   }, { passive: true });
-    /* ── Mariposas ──────────────────────────────────────────────── */
-    const flyBack  = document.getElementById('flyBack');
-    const flyFront = document.getElementById('flyFront');
-    const PALETTE  = ['#FDFBF5'];
 
-    const rnd  = (a, b) => a + Math.random() * (b - a);
-    const pick = arr => arr[(Math.random() * arr.length) | 0];
+  /* ── Mariposas ──────────────────────────────────────────────── */
+  const flyBack  = document.getElementById('flyBack');
+  const flyFront = document.getElementById('flyFront');
+  const PALETTE  = ['#FDFBF5'];
 
-    function butterflySVG(color) {
+  const rnd  = (a, b) => a + Math.random() * (b - a);
+  const pick = arr => arr[(Math.random() * arr.length) | 0];
+
+  function butterflySVG(color) {
     return `<svg viewBox="0 0 40 30" width="100%">
-        <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92"/></g>
-        <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92"/></g>
-        <line x1="20" y1="7" x2="20" y2="23" stroke="#42364D" stroke-width="1.6" stroke-linecap="round"/>
+      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92"/></g>
+      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92"/></g>
+      <line x1="20" y1="7" x2="20" y2="23" stroke="#42364D" stroke-width="1.6" stroke-linecap="round"/>
     </svg>`;
-    }
+  }
 
-    function spawnButterfly() {
+  function spawnButterfly(front) {
     if (reduced) return;
-    const front = Math.random() < 0.35;              // la mayoría pasa detrás
     const host  = front ? flyFront : flyBack;
     const side  = Math.random() < 0.5 ? -1 : 1;       // entra por izquierda o derecha
-    const band  = rnd(6, 78);                         // banda vertical de vuelo (%)
+    // Las de atrás vuelan por toda la pantalla; las de adelante solo
+    // rondan el borde superior o inferior para no tapar la lectura.
+    const band  = front ? pick([rnd(2, 12), rnd(88, 97)]) : rnd(6, 78);
 
     const el = document.createElement('div');
     el.className = 'butterfly';
@@ -204,7 +205,8 @@
     el.style.setProperty('--x3', `calc(${x0} + ${step * 3}vw)`);
     el.style.setProperty('--x4', x4);
 
-    const y0 = band, y1 = y0 + rnd(-14, 14), y2 = y0 + rnd(-16, 16), y3 = y0 + rnd(-14, 14), y4 = y0 + rnd(-10, 10);
+    const wob = front ? 5 : 15;   // las de adelante se desvían menos de su franja
+    const y0 = band, y1 = y0 + rnd(-wob, wob), y2 = y0 + rnd(-wob, wob), y3 = y0 + rnd(-wob, wob), y4 = y0 + rnd(-wob*.7, wob*.7);
     [y0, y1, y2, y3, y4].forEach((y, i) => el.style.setProperty(`--y${i}`, `${Math.max(2, Math.min(94, y))}vh`));
 
     const bank = side === -1 ? 1 : -1;
@@ -219,15 +221,22 @@
 
     host.appendChild(el);
     el.addEventListener('animationend', e => { if (e.animationName === 'flutter') el.remove(); });
-    }
+  }
 
-    function startButterflies() {
+  function startButterflies() {
     if (reduced) return;
-    for (let i = 0; i < 10; i++) setTimeout(spawnButterfly, i * 260);   // llegan varias en cuanto abre el regalo
-    setTimeout(function loop() {
-        spawnButterfly();
-        if (Math.random() < 0.45) spawnButterfly();                      // a veces salen dos casi juntas
-        setTimeout(loop, rnd(900, 2200));
+    // Atrás: abundantes, dan ambiente sin estorbar la lectura.
+    for (let i = 0; i < 10; i++) setTimeout(() => spawnButterfly(false), i * 260);
+    setTimeout(function loopBack() {
+      spawnButterfly(false);
+      if (Math.random() < 0.45) spawnButterfly(false);
+      setTimeout(loopBack, rnd(900, 2200));
     }, 700);
-    }
+
+    // Adelante: muy de vez en cuando, y solo por los bordes.
+    setTimeout(function loopFront() {
+      spawnButterfly(true);
+      setTimeout(loopFront, rnd(16000, 30000));
+    }, rnd(6000, 12000));
+  }
 })();
