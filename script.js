@@ -175,6 +175,9 @@
   const rnd  = (a, b) => a + Math.random() * (b - a);
   const pick = arr => arr[(Math.random() * arr.length) | 0];
 
+  const MAX_FRONT = 2;   // tope solo para las que pasan por delante de la carta
+  let frontCount = 0;
+
   function butterflySVG(color) {
     return `<svg viewBox="0 0 40 30" width="100%">
       <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92"/></g>
@@ -185,6 +188,9 @@
 
   function spawnButterfly(front) {
     if (reduced) return;
+    if (front && frontCount >= MAX_FRONT) return;   // las de atrás no tienen tope
+    if (front) frontCount++;
+
     const host  = front ? flyFront : flyBack;
     const side  = Math.random() < 0.5 ? -1 : 1;       // entra por izquierda o derecha
     // Las de atrás vuelan por toda la pantalla; las de adelante solo
@@ -217,15 +223,17 @@
     el.style.setProperty('--r4', `${bank * rnd(4, 12)}deg`);
 
     el.style.setProperty('--s', rnd(front ? .8 : .55, front ? 1.25 : .95).toFixed(2));
-    el.style.setProperty('--dur', `${rnd(10, 19).toFixed(1)}s`);
+    el.style.setProperty('--dur', `${rnd(front ? 16 : 10, front ? 24 : 19).toFixed(1)}s`);
 
     host.appendChild(el);
-    el.addEventListener('animationend', e => { if (e.animationName === 'flutter') el.remove(); });
+    el.addEventListener('animationend', e => {
+      if (e.animationName === 'flutter') { el.remove(); if (front) frontCount--; }
+    });
   }
 
   function startButterflies() {
     if (reduced) return;
-    // Atrás: abundantes, dan ambiente sin estorbar la lectura.
+    // Atrás: igual de abundantes que antes, dan ambiente libremente.
     for (let i = 0; i < 10; i++) setTimeout(() => spawnButterfly(false), i * 260);
     setTimeout(function loopBack() {
       spawnButterfly(false);
@@ -233,10 +241,10 @@
       setTimeout(loopBack, rnd(900, 2200));
     }, 700);
 
-    // Adelante: muy de vez en cuando, y solo por los bordes.
+    // Adelante: máximo 2 a la vez, bien espaciadas entre ellas.
     setTimeout(function loopFront() {
       spawnButterfly(true);
-      setTimeout(loopFront, rnd(16000, 30000));
-    }, rnd(6000, 12000));
+      setTimeout(loopFront, rnd(9000, 16000));
+    }, rnd(6000, 10000));
   }
 })();
