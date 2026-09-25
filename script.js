@@ -223,17 +223,19 @@
     el.style.setProperty('--r4', `${bank * rnd(4, 12)}deg`);
 
     el.style.setProperty('--s', rnd(front ? .8 : .55, front ? 1.25 : .95).toFixed(2));
-    el.style.setProperty('--dur', `${rnd(front ? 16 : 10, front ? 24 : 19).toFixed(1)}s`);
+    const durSec = rnd(front ? 16 : 10, front ? 24 : 19);
+    el.style.setProperty('--dur', `${durSec.toFixed(1)}s`);
 
     host.appendChild(el);
     el.addEventListener('animationend', e => {
       if (e.animationName === 'flutter') { el.remove(); if (front) frontCount--; }
     });
-  }
+    return durSec;
+    }
+  
 
   function startButterflies() {
     if (reduced) return;
-    // Atrás: igual de abundantes que antes, dan ambiente libremente.
     // Atrás: igual de abundantes que antes, dan ambiente libremente.
     for (let i = 0; i < 5; i++) setTimeout(() => spawnButterfly(false), i * 420);
     setTimeout(function loopBack() {
@@ -242,10 +244,12 @@
       setTimeout(loopBack, rnd(900, 2200));
     }, 1600);
 
-    // Adelante: máximo 2 a la vez, bien espaciadas entre ellas.
-    setTimeout(function loopFront() {
-      spawnButterfly(true);
-      setTimeout(loopFront, rnd(4000, 8000));
-    }, rnd(6000, 10000));
+    // Adelante: relevo continuo — la siguiente nace antes de que la
+    // anterior termine su vuelo, así nunca queda la pantalla sin ninguna.
+    (function keepFrontAlive() {
+      const dur = spawnButterfly(true) || 18;
+      setTimeout(keepFrontAlive, Math.max(3000, (dur - 3) * 1000));
+    })();
   }
+  
 })();
