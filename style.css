@@ -155,7 +155,8 @@ body{
 .sheet__ink{max-width:32ch;margin:0 auto;text-align:center}
 .sheet__ink p{font-size:.97em}
 
-.line{opacity:0;transform:translateY(10px);animation:rise .9s ease forwards;
+.line{opacity:0;transform:translateY(10px)}
+.stage.is-on .line{animation:rise .9s ease forwards;
       animation-delay:calc(.5s + var(--i) * .5s)}
 @keyframes rise{to{opacity:1;transform:none}}
 

@@ -180,8 +180,8 @@
 
   function butterflySVG(color) {
     return `<svg viewBox="0 0 40 30" width="100%">
-      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.45)" stroke-width="1"/></g>
-      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.45)" stroke-width="1"/></g>
+      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.35)" stroke-width="1"/></g>
+      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.35)" stroke-width="1"/></g>
       <line x1="20" y1="7" x2="20" y2="23" stroke="#42364D" stroke-width="1.6" stroke-linecap="round"/>
     </svg>`;
     }
@@ -202,7 +202,7 @@
 
     const x0 = side === -1 ? '-12vw' : '112vw';
     const x4 = side === -1 ? '112vw' : '-12vw';
-    const step = (side === -1 ? 1 : -1) * rnd(22, 34);
+    const step = front ? (side === -1 ? 1 : -1) * 31 : (side === -1 ? 1 : -1) * rnd(22, 34);
 
     el.style.setProperty('--x0', x0);
     el.style.setProperty('--x1', `calc(${x0} + ${step * 1}vw)`);
@@ -221,8 +221,8 @@
     el.style.setProperty('--r3', `${bank * rnd(-10, 16)}deg`);
     el.style.setProperty('--r4', `${bank * rnd(4, 12)}deg`);
 
-    el.style.setProperty('--s', rnd(front ? .8 : .55, front ? 1.25 : .95).toFixed(2));
-    const durSec = rnd(front ? 16 : 10, front ? 24 : 19);
+    el.style.setProperty('--s', (front ? 1 : rnd(.55, .95)).toFixed(2));
+    const durSec = front ? 20 : rnd(10, 19);
     el.style.setProperty('--dur', `${durSec.toFixed(1)}s`);
 
     host.appendChild(el);
