@@ -104,8 +104,8 @@
   let opened = false;
   gateBtn.addEventListener('click', () => {
     if (opened) return; opened = true;
-    audio(); chime(); paperSound(.7, .18); confetti(70);
-    startButterflies();
+    audio(); chime(); paperSound(.7, .18); confetti(40);
+    setTimeout(startButterflies, 900);
     gate.classList.add('is-gone');
     stage.classList.add('is-on');
     const wait = reduced ? 400 : 500 + lines * 500 + 800;
@@ -234,12 +234,13 @@
   function startButterflies() {
     if (reduced) return;
     // Atrás: igual de abundantes que antes, dan ambiente libremente.
-    for (let i = 0; i < 10; i++) setTimeout(() => spawnButterfly(false), i * 260);
+    // Atrás: igual de abundantes que antes, dan ambiente libremente.
+    for (let i = 0; i < 5; i++) setTimeout(() => spawnButterfly(false), i * 420);
     setTimeout(function loopBack() {
       spawnButterfly(false);
       if (Math.random() < 0.45) spawnButterfly(false);
       setTimeout(loopBack, rnd(900, 2200));
-    }, 700);
+    }, 1600);
 
     // Adelante: máximo 2 a la vez, bien espaciadas entre ellas.
     setTimeout(function loopFront() {

@@ -314,7 +314,8 @@ body{
 .butterfly{
   position:absolute;top:0;left:0;
   width:calc(26px * var(--s,1));
-  filter:drop-shadow(0 2px 5px rgba(0,0,0,.28)) drop-shadow(0 0 5px rgba(253,251,245,.55));
+  will-change:transform;
+  filter:drop-shadow(0 0 4px rgba(253,251,245,.5));
   transform:translate3d(var(--x0),var(--y0),0) rotate(var(--r0,0deg));
   animation:flutter var(--dur,12s) linear var(--delay,0s) 1 both,
             bob calc(var(--dur,12s) / 6) ease-in-out var(--delay,0s) infinite;
