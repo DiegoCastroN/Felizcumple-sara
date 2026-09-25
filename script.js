@@ -175,14 +175,16 @@
   const rnd  = (a, b) => a + Math.random() * (b - a);
   const pick = arr => arr[(Math.random() * arr.length) | 0];
 
-  const MAX_FRONT = 2;   // tope solo para las que pasan por delante de la carta
+  const MAX_FRONT = 1;   // solo una mariposa de frente a la vez, para no distraer la lectura
   let frontCount = 0;
 
-  function butterflySVG(color) {
+  function butterflySVG(color, front) {
+    // Sin trazo oscuro y con más opacidad para que se vean más "vivas" y luminosas.
+    const op = front ? 1 : .92;
     return `<svg viewBox="0 0 40 30" width="100%">
-      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.35)" stroke-width="1"/></g>
-      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.35)" stroke-width="1"/></g>
-      <line x1="20" y1="7" x2="20" y2="23" stroke="#42364D" stroke-width="1.6" stroke-linecap="round"/>
+      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity="${op}"/></g>
+      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity="${op}"/></g>
+      <line x1="20" y1="7" x2="20" y2="23" stroke="#42364D" stroke-width="1.6" stroke-linecap="round" opacity="${front ? .55 : .8}"/>
     </svg>`;
     }
   function spawnButterfly(front) {
@@ -197,8 +199,8 @@
     const band  = front ? pick([rnd(12, 20), rnd(76, 86)]) : rnd(6, 78);
 
     const el = document.createElement('div');
-    el.className = 'butterfly';
-    el.innerHTML = butterflySVG(pick(PALETTE));
+    el.className = 'butterfly' + (front ? ' butterfly--front' : '');
+    el.innerHTML = butterflySVG(pick(PALETTE), front);
 
     const x0 = side === -1 ? '-12vw' : '112vw';
     const x4 = side === -1 ? '112vw' : '-12vw';
@@ -222,7 +224,8 @@
     el.style.setProperty('--r4', `${bank * rnd(4, 12)}deg`);
 
     el.style.setProperty('--s', (front ? 1 : rnd(.55, .95)).toFixed(2));
-    const durSec = front ? 20 : rnd(10, 19);
+    // Vuelo de la de adelante un poco más lento y suave (más fluida).
+    const durSec = front ? 24 : rnd(10, 19);
     el.style.setProperty('--dur', `${durSec.toFixed(1)}s`);
 
     host.appendChild(el);
@@ -243,12 +246,84 @@
       setTimeout(loopBack, rnd(900, 2200));
     }, 1600);
 
-    // Adelante: relevo continuo — la siguiente nace antes de que la
-    // anterior termine su vuelo, así nunca queda la pantalla sin ninguna.
+    // Adelante: relevo continuo, siempre UNA sola en pantalla — la
+    // siguiente nace un poco antes de que la anterior termine su vuelo.
     (function keepFrontAlive() {
-      const dur = spawnButterfly(true) || 18;
-      setTimeout(keepFrontAlive, Math.max(3000, (dur - 3) * 1000));
+      const dur = spawnButterfly(true) || 24;
+      setTimeout(keepFrontAlive, Math.max(3500, (dur - 3) * 1000));
     })();
   }
-  
+
+  /* ══════════════════════════════════════════════════════════════
+     3. Bloqueo por dispositivo: solo se abre desde el celular
+     ══════════════════════════════════════════════════════════════ */
+  function isMobileDevice() {
+    const uaMobile = /Android|iPhone|iPad|iPod|Windows Phone|Mobile/i.test(navigator.userAgent);
+    const touch    = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    const narrow   = Math.min(innerWidth, innerHeight) <= 820;
+    // Se considera móvil si el user-agent lo indica, o si es táctil Y de pantalla angosta.
+    return uaMobile || (touch && narrow);
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     4. Bloqueo por fecha: solo se abre el 3 de octubre a las 00:00
+     ══════════════════════════════════════════════════════════════ */
+  // Cambia el año si hace falta (ej. el año que cumple).
+  const UNLOCK_DATE = new Date(2026, 9, 3, 0, 0, 0); // mes 9 = octubre (0-indexado)
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function renderCountdown() {
+    const now = new Date();
+    const diff = UNLOCK_DATE - now;
+    if (diff <= 0) return null;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    return { d, h, m, s };
+  }
+
+  function startCountdownLoop() {
+    const dEl = document.getElementById('cd-d');
+    const hEl = document.getElementById('cd-h');
+    const mEl = document.getElementById('cd-m');
+    const sEl = document.getElementById('cd-s');
+    const tick = () => {
+      const t = renderCountdown();
+      if (!t) {
+        // Ya llegó la hora: recarga para mostrar el regalo.
+        location.reload();
+        return;
+      }
+      dEl.textContent = t.d;
+      hEl.textContent = pad(t.h);
+      mEl.textContent = pad(t.m);
+      sEl.textContent = pad(t.s);
+      requestAnimationFrame(() => setTimeout(tick, 250));
+    };
+    tick();
+  }
+
+  function initGuards() {
+    const desktopLock = document.getElementById('desktopLock');
+    const dateLock    = document.getElementById('dateLock');
+
+    if (!isMobileDevice()) {
+      desktopLock.classList.add('is-on');
+      return; // no seguimos: en escritorio no se muestra nada más
+    }
+
+    if (renderCountdown()) {
+      dateLock.classList.add('is-on');
+      startCountdownLoop();
+      return; // no seguimos: aún no es la fecha
+    }
+
+    // Pasaron ambos filtros: se muestra la puerta normal del regalo.
+    gate.classList.add('is-ready-to-show');
+  }
+
+  initGuards();
+
 })();

@@ -23,6 +23,47 @@ body{
   -webkit-tap-highlight-color:transparent;
 }
 
+/* ── Pantallas de bloqueo (dispositivo / fecha) ─────────────── */
+.lockscreen{
+  position:fixed;inset:0;z-index:200;
+  display:none;align-items:center;justify-content:center;
+  padding:24px;
+  background:radial-gradient(70% 55% at 50% 40%,rgba(43,29,74,.75),rgba(22,15,40,.98));
+}
+.lockscreen.is-on{display:flex}
+.lockscreen__box{
+  max-width:340px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.lockscreen__icon{
+  width:64px;height:64px;
+  fill:none;stroke:var(--gold);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;
+  opacity:.9;
+}
+.lockscreen--date .lockscreen__icon{stroke:var(--rose)}
+.lockscreen__title{
+  font-family:"Parisienne",cursive;font-size:1.9em;color:var(--gold);line-height:1.15;
+}
+.lockscreen__sub{
+  font-style:italic;color:rgba(248,241,227,.78);font-size:.95em;line-height:1.5;
+}
+.countdown{
+  display:flex;gap:14px;margin-top:6px;
+}
+.countdown__item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  min-width:52px;padding:10px 6px;
+  background:rgba(221,186,114,.1);
+  border:1px solid rgba(221,186,114,.3);border-radius:10px;
+}
+.countdown__item span{
+  font-size:1.5em;font-weight:500;color:var(--paper);line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.countdown__item small{
+  font-size:.62em;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;
+}
+
 /* ── Cielo ──────────────────────────────────────── */
 .sky,.aurora,.moon,.dust{position:fixed;inset:0;pointer-events:none;z-index:0}
 .sky{
@@ -323,6 +364,11 @@ body{
   opacity:0;
 }
 .butterflies--back .butterfly{opacity:.72}
+
+/* La(s) de adelante: más luminosas y con un resplandor propio más marcado */
+.butterfly--front{
+  filter:drop-shadow(0 0 10px rgba(253,251,245,.85)) drop-shadow(0 0 20px rgba(221,186,114,.4));
+}
 
 .wing{transform-box:fill-box;transform-origin:50% 50%}
 .wing--l{transform-origin:100% 50%;animation:flapL .34s ease-in-out infinite}
