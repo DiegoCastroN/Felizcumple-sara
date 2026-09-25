@@ -180,8 +180,8 @@
 
   function butterflySVG(color) {
     return `<svg viewBox="0 0 40 30" width="100%">
-      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.45)" stroke-width="1"/></g>
-      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.45)" stroke-width="1"/></g>
+      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.85)" stroke-width="1"/></g>
+      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,.85)" stroke-width="1"/></g>
       <line x1="20" y1="7" x2="20" y2="23" stroke="#42364D" stroke-width="1.6" stroke-linecap="round"/>
     </svg>`;
     }
@@ -194,7 +194,7 @@
     const side  = Math.random() < 0.5 ? -1 : 1;       // entra por izquierda o derecha
     // Las de atrás vuelan por toda la pantalla; las de adelante solo
     // rondan el borde superior o inferior para no tapar la lectura.
-    const band  = front ? pick([rnd(2, 12), rnd(88, 97)]) : rnd(6, 78);
+    const band  = front ? pick([rnd(12, 20), rnd(76, 86)]) : rnd(6, 78);
 
     const el = document.createElement('div');
     el.className = 'butterfly';
