@@ -244,7 +244,7 @@
     // Adelante: máximo 2 a la vez, bien espaciadas entre ellas.
     setTimeout(function loopFront() {
       spawnButterfly(true);
-      setTimeout(loopFront, rnd(9000, 16000));
+      setTimeout(loopFront, rnd(4000, 8000));
     }, rnd(6000, 10000));
   }
 })();
