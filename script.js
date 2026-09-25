@@ -309,6 +309,12 @@
     const desktopLock = document.getElementById('desktopLock');
     const dateLock    = document.getElementById('dateLock');
 
+    // Modo de vista previa: abre el archivo con "?preview=1" al final del
+    // enlace para saltarte los dos bloqueos y revisar cómo queda todo.
+    // Quítalo (o no lo incluyas) en el enlace que le compartas a ella.
+    const isPreview = new URLSearchParams(location.search).get('preview') === '1';
+    if (isPreview) { gate.classList.add('is-ready-to-show'); return; }
+
     if (!isMobileDevice()) {
       desktopLock.classList.add('is-on');
       return; // no seguimos: en escritorio no se muestra nada más
