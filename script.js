@@ -180,8 +180,8 @@
 
   function butterflySVG(color) {
     return `<svg viewBox="0 0 40 30" width="100%">
-      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,10)" stroke-width="1"/></g>
-      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,10)" stroke-width="1"/></g>
+      <g class="wing wing--l"><path d="M20 15 C6 -8 -12 2 3 15 C-12 27 6 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,5)" stroke-width="1"/></g>
+      <g class="wing wing--r"><path d="M20 15 C34 -8 52 2 37 15 C52 27 34 37 20 15 Z" fill="${color}" opacity=".92" stroke="rgba(30,22,42,5)" stroke-width="1"/></g>
       <line x1="20" y1="7" x2="20" y2="23" stroke="#42364D" stroke-width="1.6" stroke-linecap="round"/>
     </svg>`;
     }
